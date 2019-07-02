@@ -1,6 +1,6 @@
 {
   "name": "redux-saga-relay",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Small library to add relay functionality to redux-saga for more concise sagas 🐎",
   "keywords": [
     "redux",
