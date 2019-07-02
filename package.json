@@ -1,7 +1,10 @@
 {
   "name": "redux-saga-relay",
   "version": "2.0.1",
-  "description": "",
+  "description": "Small library to add relay functionality to redux-saga for more concise sagas 🐎",
+  "keywords": [
+    "redux", "state", "redux-saga", "utility", "es6", "javascript", "middleware", "async", "relay"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
