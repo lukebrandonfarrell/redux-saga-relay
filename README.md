@@ -51,13 +51,13 @@ yarn add redux-saga-relay
 
 Pass a string and relay a single action:
 
-```
+```js
 (action) => relay(TYPE_1, action)
 ```
 
 Pass an array of strings and relay multiple actions:
 
-```
+```js
 (action) => relay([TYPE_1, TYPE_2, TYPE_2], action)
 ```
 
@@ -65,7 +65,7 @@ The triggered action will be spread into `TYPE_1`, `TYPE_2` and `TYPE_3` and dis
 
 Pass a function and relay to a callback:
 
-```
+```js
 (action) => relay(() => {
    // Do something here
 })
@@ -75,7 +75,7 @@ Pass a function and relay to a callback:
 
 The relay code is wrapped in a try - catch stament,  meaning that you can catch errors in your callbacks, to hook into the catch stament pass a function as the third parameter of the `relay` function.
 
-```
+```js
 (action) => relay(() => {
    const value = 0 / 0; //Bad code
 }, null, _recordErrorInSentry)
@@ -85,11 +85,11 @@ The relay code is wrapped in a try - catch stament,  meaning that you can catch 
 
 Actions are transformed by default to remove `meta.analytics` from the action before it is relayed. You can optionally overwrite this transformation by passing a function to the forth parameter of the `relay` function.
 
-```
+```js
 (action) => relay(TYPE_1, action, _recordErrorInSentry, _customTransform)
 
 function _customTransform(action) {
-    
+   return _.omit(action, "payload") // apply custom transform to action before it is relayed
 }
 ```
 
