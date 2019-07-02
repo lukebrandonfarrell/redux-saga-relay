@@ -3,35 +3,59 @@
  * @description
  */
 
-import { call, put } from "redux-saga/effects";
-import _omit from "lodash/omit";
+import { all, call, put } from "redux-saga/effects";
+import _omit from "lodash.omit";
+import _castArray from "lodash.castarray";
+import _map from "lodash.map";
+import _isNil from "lodash.isnil";
 
 /**
- * Relays an action to trigger another action
+ * Relays a action / function in redux-saga
  *
- * @param type
+ * @param option - either a string (to relay a action), function (to trigger a function)
  * @param action
+ * @param error - a saga callback if an error occurs
+ * @param transform - transform the action before it is relayed
  *
- * @return {*}
+ * @return {IterableIterator<*>}
  */
-export function* relayAction(type, action) {
-  // We pull any analytics data out of the action when relayed
-  const parsedAction = _omit(action, ["meta.analytics"]);
+export function* relay (option, action, error, transform = _transform) {
+  try {
+    /*
+     * We want to check if action is not nil, then apply a transform, this is useful
+     * for pulling out data which should not be relayed, e.g. redux analytics.
+     */
+    const transformedAction = !_isNil(transform) ? transform(action) : action;
 
-  yield put({
-    ...parsedAction,
-    type
-  });
+    if (typeof option === 'string') {
+      /*
+       * We cast the string to array, and string (if multiple) them to put
+       * methods, this allows one action to trigger multiple actions.
+       */
+      const anchors = _map(_castArray(option), (item) => {
+        return put({
+          ...transformedAction,
+          type: item,
+        })
+      });
+
+      // Relays multiple actions
+      yield all(anchors);
+    } else {
+      yield call(option, transformedAction);
+    }
+  } catch (e) {
+    if(error) yield call(error, e);
+  }
 }
 
 /**
- * Relays a saga to trigger a callback
+ * Default transform for removing analytics form actions
  *
- * @param callback
- * @param args
- *
- * @return {*}
+ * @param action
+ * @return {{}}
+ * @private
  */
-export function* relayCallback(callback, ...args) {
-  yield call(callback, ...args);
+function _transform(action){
+  return _omit(action, ["meta.analytics"]);
 }
