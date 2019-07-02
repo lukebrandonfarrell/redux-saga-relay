@@ -43,7 +43,7 @@ NPM:
 ```
 Yarn:
 
-```js
+```sh
 yarn add redux-saga-relay
 ```
 
