@@ -113,4 +113,4 @@ function _customTransform(action) {
 
 ## License
 
-This project is licensed under the MIT Licen
+This project is licensed under the MIT Licence
