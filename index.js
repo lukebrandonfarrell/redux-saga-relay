@@ -50,6 +50,29 @@ export function* relay (option, action, error, transform = _transform) {
 }
 
 /**
+ * Extends and action
+ *
+ * @param action
+ * @param payload
+ * @param meta
+ *
+ * @return object
+ */
+export function extend(action, payload, meta) {
+  return {
+    ...action,
+    payload: {
+      ...action.payload,
+      ...payload,
+    },
+    meta: {
+      ...action.meta,
+      ...meta
+    }
+  }
+}
+
+/**
  * Default transform for removing analytics form actions
  *
  * @param action

@@ -66,18 +66,32 @@ The triggered action will be spread into `TYPE_1`, `TYPE_2` and `TYPE_3` and dis
 Pass a function and relay to a callback:
 
 ```js
-(action) => relay(() => {
-   // Do something here
-})
+takeEvery(CUSTOM_BUTTON_PRESS, action => 
+  relay(() => {
+    // Do something here
+  })
+)
+```
+
+#### Extend
+
+You can extend your actions in your sagas with additional payload or metadata using the `extend` method exposed by the library.
+
+```js
+import { relay, extend } from "redux-saga-relay";
+
+takeEvery(CUSTOM_BUTTON_PRESS, action =>
+  relay(FETCH_ORDERS, extend(action, { ...payload }, { ...meta }))
+)
 ```
 
 #### Catch Issues
 
-The relay code is wrapped in a try - catch stament,  meaning that you can catch errors in your callbacks, to hook into the catch stament pass a function as the third parameter of the `relay` function.
+The relay code is wrapped in a try - catch block,  meaning that you can catch errors in your callbacks, to hook into the catch statement pass a function as the third parameter of the `relay` function.
 
 ```js
 (action) => relay(() => {
-   const value = 0 / 0; //Bad code
+   const { value } = object.that.does.not.exist; //Bad code
 }, null, _recordErrorInSentry)
 ```
 
