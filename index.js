@@ -27,7 +27,7 @@ export function* relay (option, action, error, transform = _transform) {
      */
     const transformedAction = !_isNil(transform) ? transform(action) : action;
 
-    if (typeof option === 'string') {
+    if (typeof option === 'string' || Array.isArray(option)) {
       /*
        * We cast the string to array, and string (if multiple) them to put
        * methods, this allows one action to trigger multiple actions.
